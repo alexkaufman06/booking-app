@@ -2,11 +2,12 @@ package main
 
 import "fmt"
 
-// https://www.youtube.com/watch?v=yyUHQIec83I 45:30
+// https://www.youtube.com/watch?v=yyUHQIec83I 1:11:13
 
 func main() {
 	const venueTickets = 50
 	venue := "Mississippi Studios"
+	bookings := []string{}
 	var remainingTickets uint = 50 // unsigned integers can't be negative
 
 	fmt.Printf("venueTickets is %T, remainingTickets is %T, venue is %T\n", venueTickets, remainingTickets, venue)
@@ -18,7 +19,7 @@ func main() {
 	var userFirstName string
 	var userLastName string
 	var userEmail string
-	var userTickets int
+	var userTickets uint
 
 	fmt.Println("What is your first name?")
 	fmt.Scan(&userFirstName)
@@ -32,5 +33,10 @@ func main() {
 	fmt.Println("How many tickets would you like to purchase?")
 	fmt.Scan(&userTickets)
 
+	remainingTickets = remainingTickets - userTickets
+	bookings = append(bookings, userFirstName+" "+userLastName)
+
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation email at %v\n", userFirstName, userLastName, userTickets, userEmail)
+	fmt.Printf("%v tickets remaining for %v\n", remainingTickets, venue)
+	fmt.Printf("These are all of our bookings: %v\n", bookings)
 }
