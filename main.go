@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // https://www.youtube.com/watch?v=yyUHQIec83I 1:11:13
 
@@ -16,27 +19,35 @@ func main() {
 	fmt.Printf("We have total of %v tickets and %v are still available.\n", venueTickets, remainingTickets)
 	fmt.Println("Get your tickets here to attend.")
 
-	var userFirstName string
-	var userLastName string
-	var userEmail string
-	var userTickets uint
+	for {
+		var userFirstName string
+		var userLastName string
+		var userEmail string
+		var userTickets uint
 
-	fmt.Println("What is your first name?")
-	fmt.Scan(&userFirstName)
+		fmt.Println("What is your first name?")
+		fmt.Scan(&userFirstName)
 
-	fmt.Println("What is your last name?")
-	fmt.Scan(&userLastName)
+		fmt.Println("What is your last name?")
+		fmt.Scan(&userLastName)
 
-	fmt.Println("What is your email?")
-	fmt.Scan(&userEmail)
+		fmt.Println("What is your email?")
+		fmt.Scan(&userEmail)
 
-	fmt.Println("How many tickets would you like to purchase?")
-	fmt.Scan(&userTickets)
+		fmt.Println("How many tickets would you like to purchase?")
+		fmt.Scan(&userTickets)
 
-	remainingTickets = remainingTickets - userTickets
-	bookings = append(bookings, userFirstName+" "+userLastName)
+		remainingTickets = remainingTickets - userTickets
+		bookings = append(bookings, userFirstName+" "+userLastName)
 
-	fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation email at %v\n", userFirstName, userLastName, userTickets, userEmail)
-	fmt.Printf("%v tickets remaining for %v\n", remainingTickets, venue)
-	fmt.Printf("These are all of our bookings: %v\n", bookings)
+		fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation email at %v\n", userFirstName, userLastName, userTickets, userEmail)
+		fmt.Printf("%v tickets remaining for %v\n", remainingTickets, venue)
+
+		firstNames := []string{}
+		for _, booking := range bookings {
+			names := strings.Fields(booking)
+			firstNames = append(firstNames, names[0])
+		}
+		fmt.Printf("The first names of bookings are: %v\n", firstNames)
+	}
 }
