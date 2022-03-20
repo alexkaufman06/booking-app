@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// https://www.youtube.com/watch?v=yyUHQIec83I 1:11:13
+// https://www.youtube.com/watch?v=yyUHQIec83I 1:54:13
 
 func main() {
 	const venueTickets = 50
@@ -13,13 +13,11 @@ func main() {
 	bookings := []string{}
 	var remainingTickets uint = 50 // unsigned integers can't be negative
 
-	fmt.Printf("venueTickets is %T, remainingTickets is %T, venue is %T\n", venueTickets, remainingTickets, venue)
-
 	fmt.Printf("Welcome to our %v concert ticket booking application!\n", venue)
 	fmt.Printf("We have total of %v tickets and %v are still available.\n", venueTickets, remainingTickets)
 	fmt.Println("Get your tickets here to attend.")
 
-	for remainingTickets > 0 && len(bookings) < 50 {
+	for {
 		var userFirstName string
 		var userLastName string
 		var userEmail string
@@ -37,7 +35,11 @@ func main() {
 		fmt.Println("How many tickets would you like to purchase?")
 		fmt.Scan(&userTickets)
 
-		if userTickets <= remainingTickets {
+		isValidName := len(userFirstName) >= 2 && len(userLastName) >= 2
+		isValidEmail := strings.Contains(userEmail, "@")
+		isValidTicketRequest := userTickets > 0 && userTickets <= remainingTickets
+
+		if isValidName && isValidEmail && isValidTicketRequest {
 			remainingTickets = remainingTickets - userTickets
 			bookings = append(bookings, userFirstName+" "+userLastName)
 
@@ -56,7 +58,16 @@ func main() {
 				break
 			}
 		} else {
-			fmt.Printf("We only have %v tickets remaining, so you can't book %v tickets\n", remainingTickets, userTickets)
+			fmt.Println("Your input is invalid, please try again:")
+			if !isValidName {
+				fmt.Println("  * First name or last name you entered is too short")
+			}
+			if !isValidEmail {
+				fmt.Println("  * Email address you entered doesn't contain @ sign")
+			}
+			if !isValidTicketRequest {
+				fmt.Println("  * The number of tickets you requested is invalid")
+			}
 		}
 	}
 }
