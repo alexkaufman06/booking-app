@@ -3,16 +3,16 @@ package main
 import (
 	"booking-app/utilities"
 	"fmt"
-	"strings"
+	"strconv"
 )
 
-// https://www.youtube.com/watch?v=yyUHQIec83I 2:39:00
+// https://www.youtube.com/watch?v=yyUHQIec83I 2:53:00
 
 // package level variables
 const venueTickets = 50
 const venue = "Mississippi Studios"
 
-var bookings = []string{}
+var bookings = make([]map[string]string, 0)
 var remainingTickets uint = 50 // unsigned integers can't be negative
 
 func main() {
@@ -54,8 +54,7 @@ func greetUsers() {
 func printFirstNames() {
 	firstNames := []string{}
 	for _, booking := range bookings {
-		names := strings.Fields(booking)
-		firstNames = append(firstNames, names[0])
+		firstNames = append(firstNames, booking["firstName"])
 	}
 	fmt.Printf("The first names of bookings are: %v\n", firstNames)
 }
@@ -83,7 +82,15 @@ func getUserInput() (string, string, string, uint) {
 
 func bookTicket(userTickets uint, firstName string, lastName string, email string) {
 	remainingTickets = remainingTickets - userTickets
-	bookings = append(bookings, firstName+" "+lastName)
+
+	var userData = make(map[string]string)
+	userData["firstName"] = firstName
+	userData["lastName"] = lastName
+	userData["email"] = email
+	userData["tickets"] = strconv.FormatUint(uint64(userTickets), 10)
+
+	bookings = append(bookings, userData)
+	fmt.Printf("List of bookings is %v\n", bookings)
 
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation email at %v\n", firstName, lastName, userTickets, email)
 	fmt.Printf("%v tickets remaining for %v\n", remainingTickets, venue)
