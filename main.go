@@ -3,17 +3,23 @@ package main
 import (
 	"booking-app/utilities"
 	"fmt"
-	"strconv"
 )
 
-// https://www.youtube.com/watch?v=yyUHQIec83I 2:53:00
+// https://www.youtube.com/watch?v=yyUHQIec83I 3:02:00
 
 // package level variables
 const venueTickets = 50
 const venue = "Mississippi Studios"
 
-var bookings = make([]map[string]string, 0)
+var bookings = make([]UserData, 0)
 var remainingTickets uint = 50 // unsigned integers can't be negative
+
+type UserData struct {
+	firstName       string
+	lastName        string
+	email           string
+	numberOfTickets uint
+}
 
 func main() {
 	greetUsers()
@@ -54,7 +60,7 @@ func greetUsers() {
 func printFirstNames() {
 	firstNames := []string{}
 	for _, booking := range bookings {
-		firstNames = append(firstNames, booking["firstName"])
+		firstNames = append(firstNames, booking.firstName)
 	}
 	fmt.Printf("The first names of bookings are: %v\n", firstNames)
 }
@@ -83,11 +89,12 @@ func getUserInput() (string, string, string, uint) {
 func bookTicket(userTickets uint, firstName string, lastName string, email string) {
 	remainingTickets = remainingTickets - userTickets
 
-	var userData = make(map[string]string)
-	userData["firstName"] = firstName
-	userData["lastName"] = lastName
-	userData["email"] = email
-	userData["tickets"] = strconv.FormatUint(uint64(userTickets), 10)
+	var userData = UserData{
+		firstName:       firstName,
+		lastName:        lastName,
+		email:           email,
+		numberOfTickets: userTickets,
+	}
 
 	bookings = append(bookings, userData)
 	fmt.Printf("List of bookings is %v\n", bookings)
